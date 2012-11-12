@@ -22,9 +22,5 @@
         "zendframework/zend-validator": "Zend\\Validator component",
         "zendframework/zend-servicemanager": "Zend\\ServiceManager component"
     },
-    "extra": {
-        "branch-alias": {
-            "dev-master": "2.0.x-dev"
-        }
-    }
+    "version": "2.0.3"
 }
