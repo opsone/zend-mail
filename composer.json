@@ -22,5 +22,9 @@
         "zendframework/zend-validator": "Zend\\Validator component",
         "zendframework/zend-servicemanager": "Zend\\ServiceManager component"
     },
-    "version": "2.0.3"
+    "version": "2.0.3",
+    "dist": {
+        "url": "http://github.com/opsone/zend-mail/archive/2.0.3.zip",
+        "type": "zip"
+    }
 }
