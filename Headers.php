@@ -72,12 +72,9 @@ class Headers implements Countable, Iterator
         $headers     = new static();
         $currentLine = '';
 
-<<<<<<< HEAD
         // clean $string
         $string = str_replace("\r\n ", " ", $string);
 
-=======
->>>>>>> upstream/master
         // iterate the header lines, some might be continuations
         foreach (explode($EOL, $string) as $line) {
             // check if a header name is present
@@ -95,18 +92,11 @@ class Headers implements Countable, Iterator
                 break;
             } else {
                 // Line does not match header format!
-<<<<<<< HEAD
                 // throw new Exception\RuntimeException(sprintf(
                 //     'Line "%s"does not match header format!',
                 //     $line
                 // ));
                 $currentLine = '';
-=======
-                throw new Exception\RuntimeException(sprintf(
-                    'Line "%s"does not match header format!',
-                    $line
-                ));
->>>>>>> upstream/master
             }
         }
         if ($currentLine) {

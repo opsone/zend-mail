@@ -322,11 +322,7 @@ class Maildir extends AbstractStorage
             $length = strlen($flags);
             for ($i = 0; $i < $length; ++$i) {
                 $flag = $flags[$i];
-<<<<<<< HEAD
                 $named_flags[$flag] = isset(self::$knownFlags[$flag]) ? self::$knownFlags[$flag] : $flag;
-=======
-                $named_flags[$flag] = isset(static::$knownFlags[$flag]) ? static::$knownFlags[$flag] : $flag;
->>>>>>> upstream/master
             }
 
             $data = array('uniq'       => $uniq,

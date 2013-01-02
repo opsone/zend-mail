@@ -283,11 +283,7 @@ class Pop3
         $line = strtok($result, "\n");
         while ($line) {
             list($no, $size) = explode(' ', trim($line));
-<<<<<<< HEAD
             $messages[(int)$no] = (int) $size;
-=======
-            $messages[(int) $no] = (int) $size;
->>>>>>> upstream/master
             $line = strtok("\n");
         }
 

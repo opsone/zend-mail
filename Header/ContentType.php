@@ -48,7 +48,6 @@ class ContentType implements HeaderInterface
 
         if (count($values)) {
             foreach ($values as $keyValuePair) {
-<<<<<<< HEAD
                 if ($keyValuePair) {
                     $parts = explode('=', $keyValuePair, 2);
                     if (count($parts) != 2) {
@@ -61,11 +60,6 @@ class ContentType implements HeaderInterface
                     $value = trim($value, "'\" \t\n\r\0\x0B");
                     $header->addParameter($key, $value);
                 }
-=======
-                list($key, $value) = explode('=', $keyValuePair, 2);
-                $value = trim($value, "'\" \t\n\r\0\x0B");
-                $header->addParameter($key, $value);
->>>>>>> upstream/master
             }
         }
 
@@ -117,7 +111,6 @@ class ContentType implements HeaderInterface
      */
     public function setType($type)
     {
-<<<<<<< HEAD
         // if (!preg_match('/^[a-z-]+\/[a-z0-9.+-]+$/i', $type)) {
         //     throw new Exception\InvalidArgumentException(sprintf(
         //         '%s expects a value in the format "type/subtype"; received "%s"',
@@ -125,15 +118,6 @@ class ContentType implements HeaderInterface
         //         (string) $type
         //     ));
         // }
-=======
-        if (!preg_match('/^[a-z-]+\/[a-z0-9.+-]+$/i', $type)) {
-            throw new Exception\InvalidArgumentException(sprintf(
-                '%s expects a value in the format "type/subtype"; received "%s"',
-                __METHOD__,
-                (string) $type
-            ));
-        }
->>>>>>> upstream/master
         $this->type = $type;
         return $this;
     }
