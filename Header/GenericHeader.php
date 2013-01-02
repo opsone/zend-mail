@@ -39,10 +39,14 @@ class GenericHeader implements HeaderInterface, UnstructuredInterface
         $decodedLine = iconv_mime_decode($headerLine, ICONV_MIME_DECODE_CONTINUE_ON_ERROR, 'UTF-8');
         $parts = explode(':', $decodedLine, 2);
         if (count($parts) != 2) {
+<<<<<<< HEAD
             $parts = explode(':', $decodedLine, 2);
             if (count($parts) != 2) {
                 throw new Exception\InvalidArgumentException('Header must match with the format "name: value"');
             }
+=======
+            throw new Exception\InvalidArgumentException('Header must match with the format "name: value"');
+>>>>>>> upstream/master
         }
         $header = new static($parts[0], ltrim($parts[1]));
         if ($decodedLine != $headerLine) {
@@ -87,7 +91,11 @@ class GenericHeader implements HeaderInterface, UnstructuredInterface
         // Validate what we have
         if (!preg_match('/^[a-z][a-z0-9-]*$/i', $fieldName)) {
             throw new Exception\InvalidArgumentException(
+<<<<<<< HEAD
                 'Header name must start with a letter, and consist of only letters, numbers and dashes'
+=======
+                'Header name must start with a letter, and consist of only letters, numbers and dashes.'
+>>>>>>> upstream/master
             );
         }
 

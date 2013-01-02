@@ -77,8 +77,13 @@ class Imap extends AbstractStorage implements Folder\FolderInterface, Writable\W
 
         $params = array();
         foreach ((array) $flags as $flag) {
+<<<<<<< HEAD
             if (isset(self::$searchFlags[$flag])) {
                 $params[] = self::$searchFlags[$flag];
+=======
+            if (isset(static::$searchFlags[$flag])) {
+                $params[] = static::$searchFlags[$flag];
+>>>>>>> upstream/master
             } else {
                 $params[] = 'KEYWORD';
                 $params[] = $this->protocol->escapeString($flag);
@@ -106,6 +111,7 @@ class Imap extends AbstractStorage implements Folder\FolderInterface, Writable\W
      * Fetch a message
      *
      * @param int $id number of message
+<<<<<<< HEAD
      * @param array $extraItems extra items to fetch
      * @return \Zend\Mail\Storage\Message
      * @throws \Zend\Mail\Protocol\Exception\RuntimeException
@@ -114,10 +120,19 @@ class Imap extends AbstractStorage implements Folder\FolderInterface, Writable\W
     {
         $items  = array_merge(array('FLAGS', 'RFC822.HEADER'), array_values($extraItems));
         $data   = $this->protocol->fetch($items, $id);
+=======
+     * @return \Zend\Mail\Storage\Message
+     * @throws \Zend\Mail\Protocol\Exception\RuntimeException
+     */
+    public function getMessage($id)
+    {
+        $data = $this->protocol->fetch(array('FLAGS', 'RFC822.HEADER'), $id);
+>>>>>>> upstream/master
         $header = $data['RFC822.HEADER'];
 
         $flags = array();
         foreach ($data['FLAGS'] as $flag) {
+<<<<<<< HEAD
             $flags[] = isset(self::$knownFlags[$flag]) ? self::$knownFlags[$flag] : $flag;
         }
 
@@ -132,6 +147,12 @@ class Imap extends AbstractStorage implements Folder\FolderInterface, Writable\W
         }
 
         return new $this->messageClass($params);
+=======
+            $flags[] = isset(static::$knownFlags[$flag]) ? static::$knownFlags[$flag] : $flag;
+        }
+
+        return new $this->messageClass(array('handler' => $this, 'id' => $id, 'headers' => $header, 'flags' => $flags));
+>>>>>>> upstream/master
     }
 
     /*

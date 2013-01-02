@@ -14,7 +14,10 @@ use Traversable;
 use Zend\Mail;
 use Zend\Mail\Address\AddressInterface;
 use Zend\Mail\Exception;
+<<<<<<< HEAD
 use Zend\Mail\Headers;
+=======
+>>>>>>> upstream/master
 use Zend\Mail\Header\HeaderInterface;
 
 /**

@@ -533,7 +533,11 @@ class Imap
         } elseif ($to === INF) {
             $set = (int) $from . ':*';
         } else {
+<<<<<<< HEAD
             $set = (int) $from . ':' . (int)$to;
+=======
+            $set = (int) $from . ':' . (int) $to;
+>>>>>>> upstream/master
         }
 
         $items = (array) $items;
