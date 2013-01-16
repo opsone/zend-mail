@@ -62,8 +62,7 @@ abstract class AbstractAddressList implements HeaderInterface
         }
         // split value on ","
         $fieldValue = str_replace(Headers::FOLDING, ' ', $fieldValue);
-        $fieldValue = str_replace(',', '__coma__', $fieldValue);
-        $values     = explode(',', $fieldValue);
+        $values     = str_getcsv($fieldValue);
         array_walk($values, 'trim');
 
         $addressList = $header->getAddressList();
@@ -76,7 +75,6 @@ abstract class AbstractAddressList implements HeaderInterface
             $name = null;
             if (isset($matches['name'])) {
                 $name  = trim($matches['name']);
-                $name  = str_replace('__coma__', ',', $name);
             }
             if (empty($name)) {
                 $name = null;
