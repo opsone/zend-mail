@@ -96,6 +96,7 @@ class Headers implements Countable, Iterator
                 //     'Line "%s"does not match header format!',
                 //     $line
                 // ));
+                $headers->addHeaderLine($currentLine);
                 $currentLine = '';
             }
         }
