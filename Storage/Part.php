@@ -14,6 +14,7 @@ use RecursiveIterator;
 use Zend\Mail\Headers;
 use Zend\Mail\Header\HeaderInterface;
 use Zend\Mime;
+use Zend\Stdlib\ErrorHandler;
 
 /**
  * @category   Zend
@@ -102,7 +103,7 @@ class Part implements RecursiveIterator, Part\PartInterface
         $params['strict'] = isset($params['strict']) ? $params['strict'] : false;
 
         if (isset($params['raw'])) {
-            Mime\Decode::splitMessage($params['raw'], $this->headers, $this->content, Mime\Mime::LINEEND, $params['strict']);
+            $this->splitRawMessage($params['raw'], $this->headers, $this->content, Mime\Mime::LINEEND, $params['strict']);
         } elseif (isset($params['headers'])) {
             if (is_array($params['headers'])) {
                 $this->headers = new Headers();
@@ -466,5 +467,58 @@ class Part implements RecursiveIterator, Part\PartInterface
     {
         $this->countParts();
         $this->iterationPos = 1;
+    }
+
+    /**
+     * split a raw message in header and body part, if no header or an
+     * invalid header is found $headers is empty
+     *
+     * The charset of the returned headers depend on your iconv settings.
+     *
+     * @param  string|Headers  $message raw message with header and optional content
+     * @param  Headers         $headers output param, headers container
+     * @param  string          $body    output param, content of message
+     * @param  string          $EOL EOL string; defaults to {@link Zend_Mime::LINEEND}
+     * @param  boolean         $strict  enable strict mode for parsing message
+     * @return null
+     */
+    private function splitRawMessage($message, &$headers, &$body, $EOL = Mime::LINEEND, $strict = false)
+    {
+        // check for valid header at first line
+        $firstline = strtok($message, "\n");
+        // OPSONE COMMENTED IN
+        // if (!preg_match('%^[^\s]+[^:]*:%', $firstline)) {
+        //     $headers = array();
+        //     // TODO: we're ignoring \r for now - is this function fast enough and is it safe to assume noone needs \r?
+        //     $body = str_replace(array("\r", "\n"), array('', $EOL), $message);
+        //     return;
+        // }
+
+        // see @ZF2-372, pops the first line off a message if it doesn't contain a header
+        if (!$strict) {
+            $parts = explode(': ', $firstline, 2);
+            if (count($parts) != 2) {
+                $message = substr($message, strpos($message, $EOL)+1);
+            }
+        }
+
+        // find an empty line between headers and body
+        // default is set new line
+        if (strpos($message, $EOL . $EOL)) {
+            list($headers, $body) = explode($EOL . $EOL, $message, 2);
+        // next is the standard new line
+        } elseif ($EOL != "\r\n" && strpos($message, "\r\n\r\n")) {
+            list($headers, $body) = explode("\r\n\r\n", $message, 2);
+        // next is the other "standard" new line
+        } elseif ($EOL != "\n" && strpos($message, "\n\n")) {
+            list($headers, $body) = explode("\n\n", $message, 2);
+        // at last resort find anything that looks like a new line
+        } else {
+            ErrorHandler::start(E_NOTICE|E_WARNING);
+            list($headers, $body) = preg_split("%([\r\n]+)\\1%U", $message, 2);
+            ErrorHandler::stop();
+        }
+
+        $headers = Headers::fromString($headers, $EOL);
     }
 }
