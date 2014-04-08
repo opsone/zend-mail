@@ -36,13 +36,13 @@ class GenericHeader implements HeaderInterface, UnstructuredInterface
 
     public static function fromString($headerLine)
     {
-        $decodedLine = iconv_mime_decode($headerLine, ICONV_MIME_DECODE_CONTINUE_ON_ERROR, 'UTF-8');
+        $decodedLine = @iconv_mime_decode($headerLine, ICONV_MIME_DECODE_CONTINUE_ON_ERROR, 'UTF-8');
+        if ($decodedLine == '') {
+            return new static();
+        }
         $parts = explode(':', $decodedLine, 2);
         if (count($parts) != 2) {
-            $parts = explode(':', $decodedLine, 2);
-            if (count($parts) != 2) {
-                throw new Exception\InvalidArgumentException('Header must match with the format "name: value"');
-            }
+            throw new Exception\InvalidArgumentException('Header must match with the format "name: value" ('.$decodedLine.')');
         }
         $header = new static($parts[0], ltrim($parts[1]));
         if ($decodedLine != $headerLine) {
